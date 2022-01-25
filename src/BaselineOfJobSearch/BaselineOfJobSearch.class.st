@@ -6,6 +6,7 @@ Class {
 
 { #category : #baselines }
 BaselineOfJobSearch >> baseline: spec [
+"dependencies: seaside, neojson"
 	<baseline>
 	self flag:'todo'.
 	spec
