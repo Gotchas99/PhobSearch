@@ -6,33 +6,45 @@ Class {
 
 { #category : #baselines }
 BaselineOfJobSearch >> baseline: spec [
-"dependencies: seaside, neojson"
+
+	"dependencies: seaside, neojson"
+
 	<baseline>
-	self flag:'todo'.
+	self flag: 'todo'.
+	spec baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON/repository' ];
+          	 baseline: 'Seaside3' with: [ spec repository: 'github://SeasideSt/Seaside:master/repository' ].
+	"""""""""""""""""""""""
 	spec
 		for: #common
-		do: [ 
-			"Inter packages dependencies are now added but it is missing some dependencies on other projects such as Morphic for Athens-Morphic"
-			"Dependencies"
-			"self
+		do: [ ""Inter packages dependencies are now added but it is missing some dependencies on other projects such as Morphic for Athens-Morphic""Dependencies""self
 				display: spec;
-				unifiedFFI: spec."
-
-			"Packages"
+				unifiedFFI: spec.""Packages""
 			spec
 				package: 'Athens-Core' with: [ spec requires: 'Display' ];
-				package: 'Athens-Core-Tests' with: [ spec requires: 'Athens-Core' ];
+				package: 'Athens-Core-Tests'
+				with: [ spec requires: 'Athens-Core' ];
 				package: 'Athens-Text' with: [ spec requires: 'Athens-Core' ];
-				package: 'Athens-Balloon' with: [ spec requires: #('Athens-Core' 'Athens-Text') ];
-				package: 'Athens-Morphic' with: [ spec requires: #('Athens-Core' 'Athens-Text' 'Athens-Balloon' 'Athens-Cairo') ];
-				package: 'Athens-Cairo' with: [ spec requires: #('Athens-Core' 'UnifiedFFI') ];
-				package: 'Athens-Examples' with: [ spec requires: #('Athens-Morphic' 'Athens-Text' 'Athens-Balloon' 'Athens-Cairo') ];
-				package: 'Athens-Cairo-Tests' with: [ spec requires: 'Athens-Cairo' ].
+				package: 'Athens-Balloon'
+				with: [ spec requires: #( 'Athens-Core' 'Athens-Text' ) ];
+				package: 'Athens-Morphic' with: [ 
+					spec requires:
+							#( 'Athens-Core' 'Athens-Text' 'Athens-Balloon'
+							   'Athens-Cairo' ) ];
+				package: 'Athens-Cairo'
+				with: [ spec requires: #( 'Athens-Core' 'UnifiedFFI' ) ];
+				package: 'Athens-Examples' with: [ 
+					spec requires:
+							#( 'Athens-Morphic' 'Athens-Text' 'Athens-Balloon'
+							   'Athens-Cairo' ) ];
+				package: 'Athens-Cairo-Tests'
+				with: [ spec requires: 'Athens-Cairo' ].
 
-			"Groups"
+			""Groups""
 			spec
-				group: 'Core' with: #('Cairo-core' 'Athens-Text' 'Athens-Balloon' 'Athens-Morphic');
-				group: 'Cairo-core' with: #('Athens-Core' 'Athens-Cairo');
-				group: 'Examples' with: #('Athens-Examples');
-				group: 'Tests' with: #('Athens-Cairo-Tests') ]
+				group: 'Core'
+				with:
+					#( 'Cairo-core' 'Athens-Text' 'Athens-Balloon' 'Athens-Morphic' );
+				group: 'Cairo-core' with: #( 'Athens-Core' 'Athens-Cairo' );
+				group: 'Examples' with: #( 'Athens-Examples' );
+				group: 'Tests' with: #( 'Athens-Cairo-Tests' ) ] "
 ]
