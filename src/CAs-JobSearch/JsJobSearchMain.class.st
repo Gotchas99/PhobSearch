@@ -84,13 +84,29 @@ JsJobSearchMain >> renderFilter: html [
 
 	html heading
 		level2;
-		with: 'Filter'.	html heading
+		with: 'Filter'.
+	html heading
 		level3;
-		with: 'Occupation group'.
+		with: 'Dessa tas med'.
+	html heading
+		level4;
+		with: 'Göteborg, tills vidare, deltid 30-70%'.
+	html heading
+		level3;
+		with: 'Nedanstående tas bort'.
+	html heading
+		level4;
+		with: 'Occupation'.
+	html heading
+		level4;
+		with: 'Occupation group'. 
 	filterGroups do: [ :each | 
 		html div with: [ 
 			html text: each.
-			html break ] ]
+			html break ].
+		html heading
+			level4;
+			with: 'Occupation Field' ]
 ]
 
 { #category : #rendering }
