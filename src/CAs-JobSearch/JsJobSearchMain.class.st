@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'rawJobs',
 		'jobs',
-		'filterGroups'
+		'filterOccupation',
+		'filterGroup',
+		'filterField'
 	],
 	#category : #'CAs-JobSearch'
 }
@@ -24,11 +26,38 @@ JsJobSearchMain class >> initialize [
 ]
 
 { #category : #rendering }
+JsJobSearchMain >> addFilterField: aString [
+
+	filterField add: aString
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> addFilterGroup: aString [
+
+	filterGroup add: aString
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> addFilterOccupation:aString [
+filterOccupation add:aString
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> filterJobs [
+
+	| tmp |
+	tmp := rawJobs.
+	filterGroup do: [ :grp | 
+		tmp := tmp reject: [ :job | job occupationGroup = grp ] ].
+	^ tmp
+]
+
+{ #category : #rendering }
 JsJobSearchMain >> filterJobs: aRawJobs [
 
 	| tmp |
 	tmp := aRawJobs.
-	filterGroups do: [ :grp | tmp:=tmp reject:[:job|job occupationGroup=grp] ].
+	filterGroup do: [ :grp | tmp:=tmp reject:[:job|job occupationGroup=grp] ].
 	^ tmp
 ]
 
@@ -38,7 +67,7 @@ JsJobSearchMain >> getJobs [
 	| api |
 	api := JsApi new.
 	rawJobs := api get.
-	jobs:= self filterJobs:rawJobs
+	jobs := self filterJobs
 ]
 
 { #category : #initialization }
@@ -46,7 +75,9 @@ JsJobSearchMain >> initialize [
 
 	super initialize.
 	jobs := #(  ).
-	filterGroups:=#('Personliga assistenter')
+	filterOccupation := OrderedCollection new.
+	filterGroup := OrderedCollection with: 'Personliga assistenter'.
+	filterField:= OrderedCollection new.
 ]
 
 { #category : #rendering }
@@ -97,16 +128,24 @@ JsJobSearchMain >> renderFilter: html [
 	html heading
 		level4;
 		with: 'Occupation'.
-	html heading
-		level4;
-		with: 'Occupation group'. 
-	filterGroups do: [ :each | 
+	filterOccupation  do: [ :each | 
 		html div with: [ 
 			html text: each.
-			html break ].
-		html heading
-			level4;
-			with: 'Occupation Field' ]
+			html break ] ].
+	html heading
+		level4;
+		with: 'Occupation group'.
+	filterGroup do: [ :each | 
+		html div with: [ 
+			html text: each.
+			html break ] ].
+	html heading
+		level4;
+		with: 'Occupation Field'.
+	filterField do: [ :each | 
+		html div with: [ 
+			html text: each.
+			html break ] ]
 ]
 
 { #category : #rendering }
@@ -130,5 +169,8 @@ JsJobSearchMain >> renderJobsOn: html [
 { #category : #rendering }
 JsJobSearchMain >> showJob: aJob [
 
-	self halt.
+
+    self call: (JsJobDetails  new 
+        job: aJob;
+        yourself)
 ]

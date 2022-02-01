@@ -16,7 +16,12 @@ JsJob class >> fromDict: aDict [
 { #category : #accessing }
 JsJob >> descriptionHtml [
 
-	^ dict at: #description at: #text_formatted
+	| tmp out |
+	tmp := dict at: #description at: #text_formatted.
+	out := (tmp includesSubstring: '<p>')
+		       ifTrue: [ tmp ]
+		       ifFalse: [ tmp copyReplaceAll: String lf  with: '<p>' ].
+	^ out
 ]
 
 { #category : #accessing }
@@ -59,4 +64,10 @@ JsJob >> shortDescription [
 
 	^ self headline , '(' , self occupation , ' * ' , self occupationGroup, ' * '
 	  , self occupationField  , ')'
+]
+
+{ #category : #accessing }
+JsJob >> webpage_url [
+
+	^ dict at: #webpage_url
 ]
