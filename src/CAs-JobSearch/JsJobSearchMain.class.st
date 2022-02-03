@@ -85,22 +85,25 @@ JsJobSearchMain >> renderFilter: html [
 		with: 'Occupation'.
 	JsJobHub default filterOccupation do: [ :each | 
 		html div with: [ 
-			html text: each.
-			html break ] ].
+			html anchor
+				callback: [ JsJobHub default removeFilterOccupation: each ];
+				with: each ] ].
 	html heading
 		level4;
 		with: 'Occupation group'.
 	JsJobHub default filterGroup do: [ :each | 
 		html div with: [ 
-			html text: each.
-			html break ] ].
+			html anchor
+				callback: [ JsJobHub default removeFilterGroup: each ];
+				with: each ] ].
 	html heading
 		level4;
-		with: 'Occupation Field' .JsJobHub default filterField
-		do: [ :each | 
-			html div with: [ 
-					html text: each.
-					html break ] ]
+		with: 'Occupation Field'.
+	JsJobHub default filterField do: [ :each | 
+		html div with: [ 
+			html anchor
+				callback: [ JsJobHub default removeFilterField: each ];
+				with: each ] ]
 ]
 
 { #category : #rendering }
@@ -116,9 +119,19 @@ JsJobSearchMain >> renderJobsOn: html [
 						html anchor
 							callback: [ self showJob: each ];
 							with: each headline ].
-				html text:
-					'(' , each occupation , ' * ' , each occupationGroup , ' * '
-					, each occupationField , ')' ] ]
+
+				html anchor
+					callback: [ 
+						JsJobHub default addFilterOccupation: each occupation ];
+					with: each occupation.html space.
+				html anchor
+					callback: [ 
+						JsJobHub default addFilterGroup: each occupationGroup ];
+					with: each occupationGroup.html space.
+				html anchor
+					callback: [ 
+						JsJobHub default addFilterField: each occupationField ];
+					with: each occupationField ] ]
 ]
 
 { #category : #rendering }

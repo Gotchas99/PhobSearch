@@ -65,9 +65,13 @@ JsJobHub >> filterJobs [
 
 	| tmp |
 	tmp := rawJobs.
-	filterGroup do: [ :grp | 
-		tmp := tmp reject: [ :job | job occupationGroup = grp ] ].
-	^ jobs:=tmp
+	filterField do: [ :each | 
+		tmp := tmp reject: [ :job | job occupationField = each ] ].
+	filterGroup do: [ :each | 
+		tmp := tmp reject: [ :job | job occupationGroup = each ] ].
+	filterOccupation do: [ :each | 
+		tmp := tmp reject: [ :job | job occupation = each ] ].
+	^ jobs := tmp
 ]
 
 { #category : #accessing }
@@ -99,4 +103,25 @@ JsJobHub >> initialize [
 JsJobHub >> jobs [
 
 ^jobs
+]
+
+{ #category : #action }
+JsJobHub >> removeFilterField: aString [
+
+	filterField remove: aString.
+	self filterJobs
+]
+
+{ #category : #action }
+JsJobHub >> removeFilterGroup: aString [
+
+	filterGroup remove: aString.
+	self filterJobs
+]
+
+{ #category : #action }
+JsJobHub >> removeFilterOccupation: aString [
+
+	filterOccupation add: aString.
+	self filterJobs
 ]
