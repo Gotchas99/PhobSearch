@@ -7,6 +7,24 @@ Class {
 	#category : #'CAs-JobSearch'
 }
 
+{ #category : #rendering }
+JsJobDetails >> filterOccupation [
+
+	JsJobHub default addFilterOccupation: job occupation
+]
+
+{ #category : #rendering }
+JsJobDetails >> filterOccupationField [
+
+	JsJobHub default addFilterField: job occupationField
+]
+
+{ #category : #rendering }
+JsJobDetails >> filterOccupationGroup [
+
+JsJobHub default addFilterGroup: job occupationGroup
+]
+
 { #category : #accessing }
 JsJobDetails >> job:aJob [
 job:=aJob

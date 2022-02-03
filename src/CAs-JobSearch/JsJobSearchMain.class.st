@@ -1,13 +1,6 @@
 Class {
 	#name : #JsJobSearchMain,
 	#superclass : #WAComponent,
-	#instVars : [
-		'rawJobs',
-		'jobs',
-		'filterOccupation',
-		'filterGroup',
-		'filterField'
-	],
 	#category : #'CAs-JobSearch'
 }
 
@@ -26,58 +19,20 @@ JsJobSearchMain class >> initialize [
 ]
 
 { #category : #rendering }
-JsJobSearchMain >> addFilterField: aString [
-
-	filterField add: aString
-]
-
-{ #category : #rendering }
-JsJobSearchMain >> addFilterGroup: aString [
-
-	filterGroup add: aString
-]
-
-{ #category : #rendering }
-JsJobSearchMain >> addFilterOccupation:aString [
-filterOccupation add:aString
-]
-
-{ #category : #rendering }
-JsJobSearchMain >> filterJobs [
-
-	| tmp |
-	tmp := rawJobs.
-	filterGroup do: [ :grp | 
-		tmp := tmp reject: [ :job | job occupationGroup = grp ] ].
-	^ tmp
-]
-
-{ #category : #rendering }
-JsJobSearchMain >> filterJobs: aRawJobs [
-
-	| tmp |
-	tmp := aRawJobs.
-	filterGroup do: [ :grp | tmp:=tmp reject:[:job|job occupationGroup=grp] ].
-	^ tmp
-]
-
-{ #category : #rendering }
 JsJobSearchMain >> getJobs [
 
-	| api |
-	api := JsApi new.
-	rawJobs := api get.
-	jobs := self filterJobs
+	JsJobHub default getJobs
 ]
 
 { #category : #initialization }
 JsJobSearchMain >> initialize [
 
 	super initialize.
-	jobs := #(  ).
-	filterOccupation := OrderedCollection new.
-	filterGroup := OrderedCollection with: 'Personliga assistenter'.
-	filterField:= OrderedCollection new.
+
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> jobs [ ^JsJobHub default jobs
 ]
 
 { #category : #rendering }
@@ -128,30 +83,30 @@ JsJobSearchMain >> renderFilter: html [
 	html heading
 		level4;
 		with: 'Occupation'.
-	filterOccupation  do: [ :each | 
+	JsJobHub default filterOccupation do: [ :each | 
 		html div with: [ 
 			html text: each.
 			html break ] ].
 	html heading
 		level4;
 		with: 'Occupation group'.
-	filterGroup do: [ :each | 
+	JsJobHub default filterGroup do: [ :each | 
 		html div with: [ 
 			html text: each.
 			html break ] ].
 	html heading
 		level4;
-		with: 'Occupation Field'.
-	filterField do: [ :each | 
-		html div with: [ 
-			html text: each.
-			html break ] ]
+		with: 'Occupation Field' .JsJobHub default filterField
+		do: [ :each | 
+			html div with: [ 
+					html text: each.
+					html break ] ]
 ]
 
 { #category : #rendering }
 JsJobSearchMain >> renderJobsOn: html [
 
-	jobs do: [ :each | 
+	self jobs do: [ :each | 
 		html div
 			class: #fooRow;
 			with: [ 
