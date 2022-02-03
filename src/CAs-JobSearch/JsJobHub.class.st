@@ -122,6 +122,6 @@ JsJobHub >> removeFilterGroup: aString [
 { #category : #action }
 JsJobHub >> removeFilterOccupation: aString [
 
-	filterOccupation add: aString.
+	filterOccupation remove: aString.
 	self filterJobs
 ]
