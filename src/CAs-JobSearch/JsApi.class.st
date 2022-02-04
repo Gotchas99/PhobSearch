@@ -36,13 +36,12 @@ JsApi >> initialize [
 		queryAt: 'parttime.min' put: '30';
 		queryAt: 'parttime.max' put: '70';
 		queryAt: 'offset' put: '0';
-		queryAt: 'limit' put: '10';
+		queryAt: 'limit' put: '100';
 		queryAt: 'municipality' put: 'PVZL_BQT_XtL';
 		queryAt: 'duration' put: 'a7uU_j21_mkL';
-				          accept: ZnMimeType applicationJson;
-		          contentReader: [ :entity | 
-			     NeoJSONReader
-				          fromString: entity contents ].
+		accept: ZnMimeType applicationJson;
+		contentReader: [ :entity | 
+			NeoJSONReader fromString: entity contents ].
 	"cl url:
 		'https://jobsearch.api.jobtechdev.se/search?parttime.min=30&parttime.max=70&offset=0&limit=10&municipality=PVZL_BQT_XtL&duration=a7uU_j21_mkL'."
 	cl headerAt: 'api-key' put: ApiKey

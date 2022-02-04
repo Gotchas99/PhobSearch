@@ -6,7 +6,8 @@ Class {
 		'jobs',
 		'filterOccupation',
 		'filterGroup',
-		'filterField'
+		'filterField',
+		'retrievalTime'
 	],
 	#classVars : [
 		'Default'
@@ -86,7 +87,8 @@ JsJobHub >> getJobs [
 	| api |
 	api := JsApi new.
 	rawJobs := api get.
-self filterJobs
+	retrievalTime:= DateAndTime current.
+	self filterJobs
 ]
 
 { #category : #initialization }
@@ -124,4 +126,9 @@ JsJobHub >> removeFilterOccupation: aString [
 
 	filterOccupation remove: aString.
 	self filterJobs
+]
+
+{ #category : #accessing }
+JsJobHub >> retrievalTime [
+^retrievalTime
 ]

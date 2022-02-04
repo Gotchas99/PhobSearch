@@ -47,10 +47,12 @@ JsJobSearchMain >> renderContentOn: html [
 		callback: [ self getJobs ];
 		with: 'Hämta annonser'.
 	html break.
+	html text: 'Senast hämtade: ' , self retrievalTime.
+	html break.
 	html break.
 	self renderJobsOn: html.
 	html horizontalRule.
-	self renderFilter:html
+	self renderFilter: html
 	"	html form: [ 
 		html heading
 			level3;
@@ -123,15 +125,24 @@ JsJobSearchMain >> renderJobsOn: html [
 				html anchor
 					callback: [ 
 						JsJobHub default addFilterOccupation: each occupation ];
-					with: each occupation.html space.
+					with: each occupation.
+				html text:' * '.
+
 				html anchor
 					callback: [ 
 						JsJobHub default addFilterGroup: each occupationGroup ];
-					with: each occupationGroup.html space.
+					with: each occupationGroup.
+				html text:' * '.
 				html anchor
 					callback: [ 
 						JsJobHub default addFilterField: each occupationField ];
 					with: each occupationField ] ]
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> retrievalTime [
+
+^JsJobHub default retrievalTime asStringYMDHM	
 ]
 
 { #category : #rendering }
@@ -141,4 +152,9 @@ JsJobSearchMain >> showJob: aJob [
     self call: (JsJobDetails  new 
         job: aJob;
         yourself)
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> style [
+    ^ 'h1 { text-align: center; }'
 ]
