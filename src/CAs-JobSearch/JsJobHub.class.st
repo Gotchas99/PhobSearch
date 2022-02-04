@@ -32,46 +32,47 @@ Default:=nil
 { #category : #action }
 JsJobHub >> addFilterField: aString [
 
-	filterField add: aString.
+	self filterField add: aString.
 	self filterJobs
 ]
 
 { #category : #action }
 JsJobHub >> addFilterGroup: aString [
 
-	filterGroup add: aString.
-	self filterJobs 
+	self filterGroup add: aString.
+	self filterJobs
 ]
 
 { #category : #action }
 JsJobHub >> addFilterOccupation: aString [
 
-	filterOccupation  add: aString.
+self 	filterOccupation add: aString.
 	self filterJobs
 ]
 
 { #category : #accessing }
 JsJobHub >> filterField [
 
-	^ filterField
+	^ filter at: #filterField ifAbsentPut: [ Set new ]
 ]
 
 { #category : #accessing }
 JsJobHub >> filterGroup [
 
-	^ filterGroup
+	^ filter at: #filterGroup ifAbsentPut: [ Set new ]
 ]
 
 { #category : #action }
 JsJobHub >> filterJobs [
 
 	| tmp |
+	self writeFile.
 	tmp := rawJobs.
-	filterField do: [ :each | 
+	self filterField do: [ :each | 
 		tmp := tmp reject: [ :job | job occupationField = each ] ].
-	filterGroup do: [ :each | 
+	self filterGroup do: [ :each | 
 		tmp := tmp reject: [ :job | job occupationGroup = each ] ].
-	filterOccupation do: [ :each | 
+	self filterOccupation do: [ :each | 
 		tmp := tmp reject: [ :job | job occupation = each ] ].
 	^ jobs := tmp
 ]
@@ -79,7 +80,7 @@ JsJobHub >> filterJobs [
 { #category : #accessing }
 JsJobHub >> filterOccupation [
 
-	^ filterOccupation
+	^ filter at: #filterOccupation ifAbsentPut: [ Set new ]
 ]
 
 { #category : #action }
@@ -97,6 +98,7 @@ JsJobHub >> initialize [
 
 	super initialize.
 	jobs := #(  ).
+	filter:= Dictionary new.
 	filterOccupation := Set new.
 	filterGroup := Set with: 'Personliga assistenter'.
 	filterField := Set new
@@ -118,21 +120,21 @@ JsJobHub >> readFile [
 { #category : #action }
 JsJobHub >> removeFilterField: aString [
 
-	filterField remove: aString.
+self 	filterField remove: aString.
 	self filterJobs
 ]
 
 { #category : #action }
 JsJobHub >> removeFilterGroup: aString [
 
-	filterGroup remove: aString.
+self 	filterGroup remove: aString.
 	self filterJobs
 ]
 
 { #category : #action }
 JsJobHub >> removeFilterOccupation: aString [
 
-	filterOccupation remove: aString.
+	self filterOccupation remove: aString.
 	self filterJobs
 ]
 
@@ -144,6 +146,6 @@ JsJobHub >> retrievalTime [
 { #category : #file }
 JsJobHub >> writeFile [
 
-	'saved_JsJobHub.ston' asFileReference ensureDelete writeStreamDo: [ :stream | 
-		STON put: filter onStreamPretty: stream ]
+	'saved_JsJobHub.ston' asFileReference ensureDelete writeStreamDo: [ 
+		:stream | STON put: filter onStreamPretty: stream ]
 ]
