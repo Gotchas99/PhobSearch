@@ -4,6 +4,7 @@ Class {
 	#instVars : [
 		'rawJobs',
 		'jobs',
+		'filter',
 		'filterOccupation',
 		'filterGroup',
 		'filterField',
@@ -107,6 +108,13 @@ JsJobHub >> jobs [
 ^jobs
 ]
 
+{ #category : #file }
+JsJobHub >> readFile [
+
+^	'saved_JsJobHub.ston' asFileReference readStreamDo: [ :stream | 
+		STON fromStream: stream ]
+]
+
 { #category : #action }
 JsJobHub >> removeFilterField: aString [
 
@@ -131,4 +139,11 @@ JsJobHub >> removeFilterOccupation: aString [
 { #category : #accessing }
 JsJobHub >> retrievalTime [
 ^retrievalTime
+]
+
+{ #category : #file }
+JsJobHub >> writeFile [
+
+	'saved_JsJobHub.ston' asFileReference ensureDelete writeStreamDo: [ :stream | 
+		STON put: filter onStreamPretty: stream ]
 ]
