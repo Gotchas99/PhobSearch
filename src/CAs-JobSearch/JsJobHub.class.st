@@ -22,11 +22,26 @@ JsJobHub class >> default [
 	^ Default ifNil: [Default := self new ]
 ]
 
+{ #category : #'class initialization' }
+JsJobHub class >> initialize [
+
+	SessionManager default registerUserClassNamed: self name
+]
+
 { #category : #accessing }
 JsJobHub class >> reset [
 
 	<script>
 Default:=nil
+]
+
+{ #category : #'class initialization' }
+JsJobHub class >> startUp: resuming [
+
+	resuming ifTrue:[
+		
+	self default readFile 
+]
 ]
 
 { #category : #action }
@@ -113,8 +128,8 @@ JsJobHub >> jobs [
 { #category : #file }
 JsJobHub >> readFile [
 
-^	'saved_JsJobHub.ston' asFileReference readStreamDo: [ :stream | 
-		STON fromStream: stream ]
+	^ filter := self savefile ifExists: [:f|f readStreamDo: [ :stream | 
+		            STON fromStream: stream ]]
 ]
 
 { #category : #action }
@@ -144,8 +159,14 @@ JsJobHub >> retrievalTime [
 ]
 
 { #category : #file }
+JsJobHub >> savefile [
+
+	^ 'saved_JsJobHub.ston' asFileReference
+]
+
+{ #category : #file }
 JsJobHub >> writeFile [
 
-	'saved_JsJobHub.ston' asFileReference ensureDelete writeStreamDo: [ 
-		:stream | STON put: filter onStreamPretty: stream ]
+	self savefile ensureDelete writeStreamDo: [ :stream | 
+		STON put: filter onStreamPretty: stream ]
 ]

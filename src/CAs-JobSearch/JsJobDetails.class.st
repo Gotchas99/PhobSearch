@@ -42,9 +42,11 @@ JsJobDetails >> renderContentOn: html [
 		level2;
 		with: [ 
 			html anchor
-			url:job webpage_url ;
+				url: job webpage_url;
 				with: job headline ].
-	html div with: [ html html: job descriptionHtml ].
+	html div
+		style: 'width:600px';
+		with: [ html html: job descriptionHtml ].
 	html horizontalRule.
 	self renderPropertiesOn: html.
 	html horizontalRule.
