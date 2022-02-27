@@ -1,6 +1,10 @@
 Class {
 	#name : #JsJobSearchMain,
 	#superclass : #WAComponent,
+	#instVars : [
+		'viewFilter',
+		'viewJobs'
+	],
 	#category : #'CAs-JobSearch'
 }
 
@@ -19,20 +23,51 @@ JsJobSearchMain class >> initialize [
 ]
 
 { #category : #rendering }
+JsJobSearchMain >> fields [
+
+	| tmp |
+	tmp := OrderedCollection with: 'Alla'.
+	tmp addAll: (self jobs collect: #occupationField) asSet sorted.
+	^ tmp
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> filterView [
+
+	viewJobs := self jobs
+]
+
+{ #category : #rendering }
 JsJobSearchMain >> getJobs [
 
 	JsJobHub default getJobs
 ]
 
+{ #category : #rendering }
+JsJobSearchMain >> groups [
+
+	| tmp |
+	tmp := OrderedCollection with: 'Alla'.
+	tmp addAll: (self jobs collect: #occupationGroup) asSet sorted.^tmp
+]
+
 { #category : #initialization }
 JsJobSearchMain >> initialize [
 
-	super initialize.
-
+	super initialize.viewFilter:=Dictionary new.
 ]
 
 { #category : #rendering }
 JsJobSearchMain >> jobs [ ^JsJobHub default jobs
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> occupations [
+
+	| tmp |
+	tmp := OrderedCollection with: 'Alla'.
+	tmp addAll: (self jobs collect: #occupation) asSet sorted.
+	^ tmp
 ]
 
 { #category : #rendering }
@@ -50,7 +85,8 @@ JsJobSearchMain >> renderContentOn: html [
 	html text: 'Antal jobb ' , self jobs size asString.
 	html break.
 	html text: 'Senast hämtade: ' , self retrievalTime.
-	html break.
+	html break.html break.
+	self renderViewFilterOn: html.
 	html break.
 	self renderJobsOn: html.
 	html horizontalRule.
@@ -151,6 +187,35 @@ JsJobSearchMain >> renderJobsOn: html [
 					callback: [ 
 						JsJobHub default addFilterField: each occupationField ];
 					with: each occupationField ] ]
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> renderViewFilterOn: html [
+
+	html text: 'Field: '.
+	html select
+		list: self fields;
+		selected: (viewFilter at: #field ifAbsent: [ 'Alla' ]);
+		callback: [ :value | 
+			value = #Male
+				ifTrue: [ self contact beMale ]
+				ifFalse: [ self contact beFemale ] ].
+	html text: 'Group: '.
+	html select
+		list: self groups;
+		selected: (viewFilter at: #group ifAbsent: [ 'Alla' ]);
+		callback: [ :value | 
+			value = #Male
+				ifTrue: [ self contact beMale ]
+				ifFalse: [ self contact beFemale ] ].
+	html text: 'Occupation: '.
+	html select
+		list: self occupations;
+		selected: (viewFilter at: #occupation ifAbsent: [ 'Alla' ]);
+		callback: [ :value | 
+			value = #Male
+				ifTrue: [ self contact beMale ]
+				ifFalse: [ self contact beFemale ] ]
 ]
 
 { #category : #rendering }
