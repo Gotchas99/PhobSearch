@@ -5,9 +5,6 @@ Class {
 		'rawJobs',
 		'jobs',
 		'filter',
-		'filterOccupation',
-		'filterGroup',
-		'filterField',
 		'retrievalTime'
 	],
 	#classVars : [
@@ -59,6 +56,15 @@ JsJobHub >> addFilterGroup: aString [
 ]
 
 { #category : #action }
+JsJobHub >> addFilterJob: aJobFull [
+
+	| jobShort |
+	jobShort := Dictionary new at: #id put: (aJobFull id);at:#headline put:(aJobFull headline);yourself.
+	self filterSingleJobs add: jobShort.
+	self filterJobs
+]
+
+{ #category : #action }
 JsJobHub >> addFilterOccupation: aString [
 
 self 	filterOccupation add: aString.
@@ -83,6 +89,8 @@ JsJobHub >> filterJobs [
 	| tmp |
 	self writeFile.
 	tmp := rawJobs.
+	self filterSingleJobs do: [ :each | 
+		tmp := tmp reject: [ :job | job id = (each at:#id)] ].
 	self filterField do: [ :each | 
 		tmp := tmp reject: [ :job | job occupationField = each ] ].
 	self filterGroup do: [ :each | 
@@ -96,6 +104,12 @@ JsJobHub >> filterJobs [
 JsJobHub >> filterOccupation [
 
 	^ filter at: #filterOccupation ifAbsentPut: [ Set new ]
+]
+
+{ #category : #accessing }
+JsJobHub >> filterSingleJobs [
+
+		^ filter at: #filterSingleJobs ifAbsentPut: [ Set new ]
 ]
 
 { #category : #action }
@@ -112,11 +126,8 @@ JsJobHub >> getJobs [
 JsJobHub >> initialize [
 
 	super initialize.
-	jobs := #(  ).
-	filter:= Dictionary new.
-	filterOccupation := Set new.
-	filterGroup := Set with: 'Personliga assistenter'.
-	filterField := Set new
+	jobs := #(  ).rawJobs  := #(  ).
+	filter := Dictionary new
 ]
 
 { #category : #accessing }
@@ -143,6 +154,13 @@ self 	filterField remove: aString.
 JsJobHub >> removeFilterGroup: aString [
 
 self 	filterGroup remove: aString.
+	self filterJobs
+]
+
+{ #category : #action }
+JsJobHub >> removeFilterJob: aJobShort [
+
+	self filterSingleJobs  remove: aJobShort ifAbsent:[].
 	self filterJobs
 ]
 

@@ -39,7 +39,12 @@ JsJobDetails >> renderContentOn: html [
 			html anchor
 				url: job webpage_url;
 				with: job headline ].
-	html text: job webpage_url.
+			html anchor
+							callback: [ JsJobHub default addFilterJob: job ];
+							with: '  (Dölj detta jobb)'.
+	html image url: job logo_url.
+	html break.
+	"html text: job webpage_url."
 	html break.
 
 	html div

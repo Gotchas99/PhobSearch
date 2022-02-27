@@ -78,7 +78,7 @@ JsJobSearchMain >> renderFilter: html [
 		with: 'Dessa tas med'.
 	html heading
 		level4;
-		with: 'Göteborg, tills vidare, deltid 30-70%'.
+		with: 'Göteborg, tills vidare, deltid (inga procent längre)'.
 	html heading
 		level3;
 		with: 'Nedanstående tas bort'.
@@ -105,7 +105,15 @@ JsJobSearchMain >> renderFilter: html [
 		html div with: [ 
 			html anchor
 				callback: [ JsJobHub default removeFilterField: each ];
-				with: each ] ]
+				with: each ] ].
+	html heading
+		level4;
+		with: 'Enskilda jobb'.
+	JsJobHub default filterSingleJobs do: [ :each | 
+		html div with: [ 
+			html anchor
+				callback: [ JsJobHub default removeFilterJob: each ];
+				with: (each at: #headline) ] ]
 ]
 
 { #category : #rendering }
@@ -120,19 +128,23 @@ JsJobSearchMain >> renderJobsOn: html [
 					with: [ 
 						html anchor
 							callback: [ self showJob: each ];
-							with: each headline ].
+							with: each headline.
+						html text: ' (' , each employer , ') '.
+						html anchor
+							callback: [ JsJobHub default addFilterJob: each ];
+							with: '  (Dölj detta jobb)' ].
 
 				html anchor
 					callback: [ 
 						JsJobHub default addFilterOccupation: each occupation ];
 					with: each occupation.
-				html text:' * '.
+				html text: ' * '.
 
 				html anchor
 					callback: [ 
 						JsJobHub default addFilterGroup: each occupationGroup ];
 					with: each occupationGroup.
-				html text:' * '.
+				html text: ' * '.
 				html anchor
 					callback: [ 
 						JsJobHub default addFilterField: each occupationField ];
@@ -142,7 +154,9 @@ JsJobSearchMain >> renderJobsOn: html [
 { #category : #rendering }
 JsJobSearchMain >> retrievalTime [
 
-^JsJobHub default retrievalTime asStringYMDHM	
+	^ JsJobHub default retrievalTime
+		  ifNil: [ 'Vet inte' ]
+		  ifNotNil: [ :val | val asStringYMDHM ]
 ]
 
 { #category : #rendering }

@@ -29,6 +29,12 @@ JsJob >> dict [
 self flag:'temporary help'. ^dict
 ]
 
+{ #category : #accessing }
+JsJob >> employer [
+
+	^ dict at: #employer at:#name
+]
+
 { #category : #'instance creation' }
 JsJob >> fromDict: aDict [
 
@@ -39,6 +45,18 @@ JsJob >> fromDict: aDict [
 JsJob >> headline [
 
 ^	dict at: #headline
+]
+
+{ #category : #accessing }
+JsJob >> id [
+
+	^ dict at: #id
+]
+
+{ #category : #accessing }
+JsJob >> logo_url [
+
+	^ dict at: #logo_url
 ]
 
 { #category : #accessing }
