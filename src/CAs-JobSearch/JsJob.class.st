@@ -59,6 +59,13 @@ JsJob >> occupationGroup [
 	^ dict at: #occupation_group at: #label
 ]
 
+{ #category : #printing }
+JsJob >> printOn: aStream [
+
+	aStream
+		nextPutAll:self headline 
+]
+
 { #category : #accessing }
 JsJob >> shortDescription [
 

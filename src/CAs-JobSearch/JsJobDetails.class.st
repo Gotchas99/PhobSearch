@@ -35,15 +35,13 @@ JsJobDetails >> renderContentOn: html [
 
 	html heading
 		level1;
-		with: 'Jobbdetaljer'.
-	html text: job webpage_url.
-	html break.
-	html heading
-		level2;
 		with: [ 
 			html anchor
 				url: job webpage_url;
 				with: job headline ].
+	html text: job webpage_url.
+	html break.
+
 	html div
 		style: 'width:600px';
 		with: [ html html: job descriptionHtml ].

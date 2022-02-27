@@ -17,12 +17,13 @@ JsApi class >> setApiKey: aKey [
 ]
 
 { #category : #initialization }
-JsApi >> get [
+JsApi >> getAd: anId [
 
-	| resp jobs |
+	| resp job |
+	cl path: 'ad/' , anId.
 	resp := cl get.
-	jobs := (resp at: #hits) collect: [ :dict | JsJob fromDict: dict ].
-	^ jobs
+	job :=  JsJob fromDict: resp.
+	^ job
 ]
 
 { #category : #initialization }
@@ -32,17 +33,30 @@ JsApi >> initialize [
 	cl
 		host: 'jobsearch.api.jobtechdev.se';
 		https;
-		path: 'search';
-		queryAt: 'parttime.min' put: '30';
-		queryAt: 'parttime.max' put: '70';
-		queryAt: 'offset' put: '0';
-		queryAt: 'limit' put: '100';
-		queryAt: 'municipality' put: 'PVZL_BQT_XtL';
-		queryAt: 'duration' put: 'a7uU_j21_mkL';
+		
 		accept: ZnMimeType applicationJson;
 		contentReader: [ :entity | 
 			NeoJSONReader fromString: entity contents ].
 	"cl url:
 		'https://jobsearch.api.jobtechdev.se/search?parttime.min=30&parttime.max=70&offset=0&limit=10&municipality=PVZL_BQT_XtL&duration=a7uU_j21_mkL'."
 	cl headerAt: 'api-key' put: ApiKey
+]
+
+{ #category : #initialization }
+JsApi >> search [
+
+	| resp jobs |
+	cl
+		path: 'search';
+		"queryAt: 'parttime.min' put: '30';""queryAt: 'parttime.max' put: '70';"
+		"worktime-extent = Deltid"
+		queryAt: 'worktime-extent'
+		put: '947z_JGS_Uk2';
+		queryAt: 'offset' put: '0';
+		queryAt: 'limit' put: '100';
+		queryAt: 'municipality' put: 'PVZL_BQT_XtL';
+		queryAt: 'duration' put: 'a7uU_j21_mkL'.
+	resp := cl get.
+	jobs := (resp at: #hits) collect: [ :dict | JsJob fromDict: dict ].
+	^ jobs
 ]

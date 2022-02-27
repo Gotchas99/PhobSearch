@@ -103,8 +103,8 @@ JsJobHub >> getJobs [
 
 	| api |
 	api := JsApi new.
-	rawJobs := api get.
-	retrievalTime:= DateAndTime current.
+	rawJobs := api search.
+	retrievalTime := DateAndTime current.
 	self filterJobs
 ]
 

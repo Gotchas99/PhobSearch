@@ -154,7 +154,14 @@ JsJobSearchMain >> showJob: aJob [
         yourself)
 ]
 
-{ #category : #rendering }
+{ #category : #hooks }
 JsJobSearchMain >> style [
     ^ 'h1 { text-align: center; }'
+]
+
+{ #category : #updating }
+JsJobSearchMain >> updateRoot: anHtmlRoot [
+
+	super updateRoot: anHtmlRoot.
+	anHtmlRoot title: 'PhobSearch'
 ]
