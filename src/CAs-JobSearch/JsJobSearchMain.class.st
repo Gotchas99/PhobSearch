@@ -47,6 +47,8 @@ JsJobSearchMain >> renderContentOn: html [
 		callback: [ self getJobs ];
 		with: 'Hämta annonser'.
 	html break.
+	html text: 'Antal jobb ' , self jobs size asString.
+	html break.
 	html text: 'Senast hämtade: ' , self retrievalTime.
 	html break.
 	html break.

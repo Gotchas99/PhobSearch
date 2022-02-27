@@ -45,11 +45,10 @@ JsApi >> initialize [
 { #category : #initialization }
 JsApi >> search [
 
-	| resp jobs |
+	| resp jobs pageJobs total lastPage |
 	cl
 		path: 'search';
-		"queryAt: 'parttime.min' put: '30';""queryAt: 'parttime.max' put: '70';"
-		"worktime-extent = Deltid"
+		"queryAt: 'parttime.min' put: '30';""queryAt: 'parttime.max' put: '70';""worktime-extent = Deltid"
 		queryAt: 'worktime-extent'
 		put: '947z_JGS_Uk2';
 		queryAt: 'offset' put: '0';
@@ -57,6 +56,23 @@ JsApi >> search [
 		queryAt: 'municipality' put: 'PVZL_BQT_XtL';
 		queryAt: 'duration' put: 'a7uU_j21_mkL'.
 	resp := cl get.
-	jobs := (resp at: #hits) collect: [ :dict | JsJob fromDict: dict ].
+	total := resp at: #total at: #value.
+	lastPage := total // 100 * 100.
+	jobs := OrderedCollection new.
+	0 to: lastPage by: 100 do: [ :off|
+		pageJobs := self searchOffset: off.
+	jobs addAll: pageJobs. ].
 	^ jobs
+]
+
+{ #category : #initialization }
+JsApi >> searchOffset: anInt [
+
+	| resp jobs |
+	cl
+		
+		queryAt: 'offset' put: anInt.
+	resp := cl get.
+	jobs := (resp at: #hits) collect: [ :dict | JsJob fromDict: dict ].
+	^jobs
 ]
