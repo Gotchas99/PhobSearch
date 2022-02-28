@@ -22,7 +22,7 @@ JsJobSearchMain class >> initialize [
     app preferenceAt: #sessionClass put: FooSession"
 ]
 
-{ #category : #rendering }
+{ #category : #accessing }
 JsJobSearchMain >> fields [
 
 	| tmp |
@@ -31,19 +31,28 @@ JsJobSearchMain >> fields [
 	^ tmp
 ]
 
-{ #category : #rendering }
+{ #category : #filtering }
 JsJobSearchMain >> filterView [
 
-	viewJobs := self jobs
+	viewJobs := self jobs.
+	(viewFilter at: #field) = 'Alla' ifFalse: [ 
+		viewJobs := viewJobs select: [ :job | 
+			            job occupationField = (viewFilter at: #field) ] ].
+	(viewFilter at: #group) = 'Alla' ifFalse: [ 
+		viewJobs := viewJobs select: [ :job | 
+			            job occupationGroup = (viewFilter at: #group) ] ].
+	(viewFilter at: #occupation) = 'Alla' ifFalse: [ 
+		viewJobs := viewJobs select: [ :job | 
+			            job occupation = (viewFilter at: #occupation) ] ]
 ]
 
 { #category : #rendering }
 JsJobSearchMain >> getJobs [
 
-	JsJobHub default getJobs
+	JsJobHub default getJobs.self filterView
 ]
 
-{ #category : #rendering }
+{ #category : #accessing }
 JsJobSearchMain >> groups [
 
 	| tmp |
@@ -54,14 +63,19 @@ JsJobSearchMain >> groups [
 { #category : #initialization }
 JsJobSearchMain >> initialize [
 
-	super initialize.viewFilter:=Dictionary new.
+	super initialize.viewJobs:=#().
+	viewFilter := Dictionary new
+		              at: #field put: 'Alla';
+		              at: #group put: 'Alla';
+		              at: #occupation put: 'Alla';
+		              yourself
 ]
 
-{ #category : #rendering }
+{ #category : #accessing }
 JsJobSearchMain >> jobs [ ^JsJobHub default jobs
 ]
 
-{ #category : #rendering }
+{ #category : #accessing }
 JsJobSearchMain >> occupations [
 
 	| tmp |
@@ -157,7 +171,7 @@ JsJobSearchMain >> renderFilter: html [
 { #category : #rendering }
 JsJobSearchMain >> renderJobsOn: html [
 
-	self jobs do: [ :each | 
+	viewJobs do: [ :each | 
 		html div
 			class: #fooRow;
 			with: [ 
@@ -192,38 +206,59 @@ JsJobSearchMain >> renderJobsOn: html [
 { #category : #rendering }
 JsJobSearchMain >> renderViewFilterOn: html [
 
-	html text: 'Field: '.
-	html select
-		list: self fields;
-		selected: (viewFilter at: #field ifAbsent: [ 'Alla' ]);
-		callback: [ :value | 
-			value = #Male
-				ifTrue: [ self contact beMale ]
-				ifFalse: [ self contact beFemale ] ].
-	html text: 'Group: '.
-	html select
-		list: self groups;
-		selected: (viewFilter at: #group ifAbsent: [ 'Alla' ]);
-		callback: [ :value | 
-			value = #Male
-				ifTrue: [ self contact beMale ]
-				ifFalse: [ self contact beFemale ] ].
-	html text: 'Occupation: '.
-	html select
-		list: self occupations;
-		selected: (viewFilter at: #occupation ifAbsent: [ 'Alla' ]);
-		callback: [ :value | 
-			value = #Male
-				ifTrue: [ self contact beMale ]
-				ifFalse: [ self contact beFemale ] ]
+	html form: [ 
+		html text: 'Field: '.
+		html select
+			list: self fields;
+			selected: (viewFilter at: #field ifAbsent: [ 'Alla' ]);
+			callback: [ :value | self setField: value ].
+		html text: 'Group: '.
+		html select
+			list: self groups;
+			selected: (viewFilter at: #group ifAbsent: [ 'Alla' ]);
+			callback: [ :value | self setGroup: value ].
+		html text: 'Occupation: '.
+		html select
+			list: self occupations;
+			selected: (viewFilter at: #occupation ifAbsent: [ 'Alla' ]);
+			callback: [ :value | 
+			self setOccupation:  value  ].
+		html break.
+
+		html submitButton on: #save of: self ]
 ]
 
-{ #category : #rendering }
+{ #category : #accessing }
 JsJobSearchMain >> retrievalTime [
 
 	^ JsJobHub default retrievalTime
 		  ifNil: [ 'Vet inte' ]
 		  ifNotNil: [ :val | val asStringYMDHM ]
+]
+
+{ #category : #rendering }
+JsJobSearchMain >> save [
+
+	self filterView
+]
+
+{ #category : #filtering }
+JsJobSearchMain >> setField: value [
+
+	viewFilter at: #field put:value
+]
+
+{ #category : #filtering }
+JsJobSearchMain >> setGroup: value [
+
+	viewFilter at: #group put: value
+]
+
+{ #category : #filtering }
+JsJobSearchMain >> setOccupation: value [
+
+
+	viewFilter at: #occupation put: value
 ]
 
 { #category : #rendering }
