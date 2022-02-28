@@ -39,9 +39,9 @@ JsJobDetails >> renderContentOn: html [
 			html anchor
 				url: job webpage_url;
 				with: job headline ].
-			html anchor
-							callback: [ JsJobHub default addFilterJob: job ];
-							with: '  (Dölj detta jobb)'.
+	html anchor
+		callback: [ JsJobHub default addFilterJob: job .self answer];
+		with: '  (Dölj detta jobb)'.
 	html image url: job logo_url.
 	html break.
 	"html text: job webpage_url."
@@ -52,6 +52,9 @@ JsJobDetails >> renderContentOn: html [
 		with: [ html html: job descriptionHtml ].
 	html horizontalRule.
 	self renderPropertiesOn: html.
+	html anchor
+		callback: [ job inspect ];
+		with: 'inspect'.
 	html horizontalRule.
 	html anchor
 		callback: [ self answer ];

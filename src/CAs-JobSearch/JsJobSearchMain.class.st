@@ -55,9 +55,12 @@ JsJobSearchMain >> getJobs [
 { #category : #accessing }
 JsJobSearchMain >> groups [
 
-	| tmp |
+	| tmp j|
+	j:=self jobs.
+((	viewFilter at:'field')='Alla')ifFalse:[j:= j select:[:aJob|aJob occupationField =(	viewFilter at:'field')]].
 	tmp := OrderedCollection with: 'Alla'.
-	tmp addAll: (self jobs collect: #occupationGroup) asSet sorted.^tmp
+	tmp addAll: (j collect: #occupationGroup) asSet sorted.
+	^ tmp
 ]
 
 { #category : #initialization }
@@ -78,9 +81,13 @@ JsJobSearchMain >> jobs [ ^JsJobHub default jobs
 { #category : #accessing }
 JsJobSearchMain >> occupations [
 
-	| tmp |
+	| tmp j |
+	j := self jobs.
+	(viewFilter at: 'group') = 'Alla' ifFalse: [ 
+		j := j select: [ :aJob | 
+			     aJob occupationGroup = (viewFilter at: 'group') ] ].
 	tmp := OrderedCollection with: 'Alla'.
-	tmp addAll: (self jobs collect: #occupation) asSet sorted.
+	tmp addAll: (j collect: #occupation) asSet sorted.
 	^ tmp
 ]
 
@@ -221,11 +228,8 @@ JsJobSearchMain >> renderViewFilterOn: html [
 		html select
 			list: self occupations;
 			selected: (viewFilter at: #occupation ifAbsent: [ 'Alla' ]);
-			callback: [ :value | 
-			self setOccupation:  value  ].
-		html break.
-
-		html submitButton on: #save of: self ]
+			callback: [ :value | self setOccupation: value ].
+			html submitButton on: #save of: self ]
 ]
 
 { #category : #accessing }

@@ -74,13 +74,13 @@ self 	filterOccupation add: aString.
 { #category : #accessing }
 JsJobHub >> filterField [
 
-	^ filter at: #filterField ifAbsentPut: [ Set new ]
+	^( filter at: #filterField ifAbsentPut: [ Set new ])sorted
 ]
 
 { #category : #accessing }
 JsJobHub >> filterGroup [
 
-	^ filter at: #filterGroup ifAbsentPut: [ Set new ]
+	^ (filter at: #filterGroup ifAbsentPut: [ Set new ]) sorted
 ]
 
 { #category : #action }
@@ -103,13 +103,13 @@ JsJobHub >> filterJobs [
 { #category : #accessing }
 JsJobHub >> filterOccupation [
 
-	^ filter at: #filterOccupation ifAbsentPut: [ Set new ]
+	^ (filter at: #filterOccupation ifAbsentPut: [ Set new ])sorted
 ]
 
 { #category : #accessing }
 JsJobHub >> filterSingleJobs [
 
-		^ filter at: #filterSingleJobs ifAbsentPut: [ Set new ]
+	^ (filter at: #filterSingleJobs ifAbsentPut: [ Set new ])sorted
 ]
 
 { #category : #action }
@@ -128,6 +128,12 @@ JsJobHub >> initialize [
 	super initialize.
 	jobs := #(  ).rawJobs  := #(  ).
 	filter := Dictionary new
+]
+
+{ #category : #accessing }
+JsJobHub >> jobId: anId [
+
+	^ rawJobs  detect: [ :job | job id = anId ]
 ]
 
 { #category : #accessing }
