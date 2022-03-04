@@ -44,14 +44,14 @@ JsJobHub class >> startUp: resuming [
 { #category : #action }
 JsJobHub >> addFilterField: aString [
 
-	self filterField add: aString.
+(	filter at: #filterField) add: aString.
 	self filterJobs
 ]
 
 { #category : #action }
 JsJobHub >> addFilterGroup: aString [
 
-	self filterGroup add: aString.
+(	filter at: #filterGroup) add: aString.
 	self filterJobs
 ]
 
@@ -67,7 +67,7 @@ JsJobHub >> addFilterJob: aJobFull [
 { #category : #action }
 JsJobHub >> addFilterOccupation: aString [
 
-self 	filterOccupation add: aString.
+	(filter at: #filterOccupation) add: aString.
 	self filterJobs
 ]
 
@@ -109,7 +109,7 @@ JsJobHub >> filterOccupation [
 { #category : #accessing }
 JsJobHub >> filterSingleJobs [
 
-	^ (filter at: #filterSingleJobs ifAbsentPut: [ Set new ])sorted
+	^ (filter at: #filterSingleJobs ifAbsentPut: [ Set new ])
 ]
 
 { #category : #action }

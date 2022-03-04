@@ -32,6 +32,12 @@ JsJobSearchMain >> fields [
 ]
 
 { #category : #filtering }
+JsJobSearchMain >> filter [
+
+	self filterView
+]
+
+{ #category : #filtering }
 JsJobSearchMain >> filterView [
 
 	viewJobs := self jobs.
@@ -46,7 +52,7 @@ JsJobSearchMain >> filterView [
 			            job occupation = (viewFilter at: #occupation) ] ]
 ]
 
-{ #category : #rendering }
+{ #category : #accessing }
 JsJobSearchMain >> getJobs [
 
 	JsJobHub default getJobs.self filterView
@@ -229,7 +235,7 @@ JsJobSearchMain >> renderViewFilterOn: html [
 			list: self occupations;
 			selected: (viewFilter at: #occupation ifAbsent: [ 'Alla' ]);
 			callback: [ :value | self setOccupation: value ].
-			html submitButton on: #save of: self ]
+		html submitButton on: #filter of: self ]
 ]
 
 { #category : #accessing }
@@ -238,12 +244,6 @@ JsJobSearchMain >> retrievalTime [
 	^ JsJobHub default retrievalTime
 		  ifNil: [ 'Vet inte' ]
 		  ifNotNil: [ :val | val asStringYMDHM ]
-]
-
-{ #category : #rendering }
-JsJobSearchMain >> save [
-
-	self filterView
 ]
 
 { #category : #filtering }
@@ -265,7 +265,7 @@ JsJobSearchMain >> setOccupation: value [
 	viewFilter at: #occupation put: value
 ]
 
-{ #category : #rendering }
+{ #category : #accessing }
 JsJobSearchMain >> showJob: aJob [
 
 
