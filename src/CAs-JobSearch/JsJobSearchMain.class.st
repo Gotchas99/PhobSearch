@@ -72,7 +72,8 @@ JsJobSearchMain >> groups [
 { #category : #initialization }
 JsJobSearchMain >> initialize [
 
-	super initialize.viewJobs:=#().
+	super initialize.
+	self filterView.
 	viewFilter := Dictionary new
 		              at: #field put: 'Alla';
 		              at: #group put: 'Alla';
@@ -196,23 +197,28 @@ JsJobSearchMain >> renderJobsOn: html [
 							with: each headline.
 						html text: ' (' , each employer , ') '.
 						html anchor
-							callback: [ JsJobHub default addFilterJob: each ];
+							callback: [ 
+								JsJobHub default addFilterJob: each.
+								self filterView ];
 							with: '  (Dölj detta jobb)' ].
 
 				html anchor
 					callback: [ 
-						JsJobHub default addFilterOccupation: each occupation ];
+						JsJobHub default addFilterOccupation: each occupation .
+								self filterView];
 					with: each occupation.
 				html text: ' * '.
 
 				html anchor
 					callback: [ 
-						JsJobHub default addFilterGroup: each occupationGroup ];
+						JsJobHub default addFilterGroup: each occupationGroup .
+								self filterView];
 					with: each occupationGroup.
 				html text: ' * '.
 				html anchor
 					callback: [ 
-						JsJobHub default addFilterField: each occupationField ];
+						JsJobHub default addFilterField: each occupationField.
+								self filterView ];
 					with: each occupationField ] ]
 ]
 

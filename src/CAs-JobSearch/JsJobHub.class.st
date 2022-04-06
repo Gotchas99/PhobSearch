@@ -119,6 +119,7 @@ JsJobHub >> getJobs [
 	api := JsApi new.
 	rawJobs := api search.
 	retrievalTime := DateAndTime current.
+	self traceCr: 'Retrieving jobs at: ',retrievalTime asString.
 	self filterJobs
 ]
 
