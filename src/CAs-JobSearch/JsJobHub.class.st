@@ -2,6 +2,7 @@ Class {
 	#name : #JsJobHub,
 	#superclass : #Object,
 	#instVars : [
+		'connection',
 		'rawJobs',
 		'jobs',
 		'filter',
@@ -33,12 +34,16 @@ Default:=nil
 ]
 
 { #category : #'class initialization' }
+JsJobHub class >> shutDown: quitting [
+
+	self default closeDb
+]
+
+{ #category : #'class initialization' }
 JsJobHub class >> startUp: resuming [
 
-	resuming ifTrue:[
-		
-	self default readFile 
-]
+	resuming ifTrue: [ self default readFile ].
+	self default openDb.
 ]
 
 { #category : #action }
@@ -69,6 +74,12 @@ JsJobHub >> addFilterOccupation: aString [
 
 	(filter at: #filterOccupation) add: aString.
 	self filterJobs
+]
+
+{ #category : #database }
+JsJobHub >> closeDb [
+
+	connection ifNotNil:[connection close]
 ]
 
 { #category : #accessing }
@@ -141,6 +152,14 @@ JsJobHub >> jobId: anId [
 JsJobHub >> jobs [
 
 ^jobs
+]
+
+{ #category : #database }
+JsJobHub >> openDb [
+
+	connection := SQLite3Connection on:
+		              (Smalltalk imageDirectory / 'PhobDatabase.db')
+			              fullName.connection open.
 ]
 
 { #category : #file }
