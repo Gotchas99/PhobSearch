@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'job'
 	],
-	#category : #'CAs-JobSearch'
+	#category : #'CAs-JobSearch-Web'
 }
 
 { #category : #rendering }

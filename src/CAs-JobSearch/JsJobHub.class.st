@@ -157,9 +157,11 @@ JsJobHub >> jobs [
 { #category : #database }
 JsJobHub >> openDb [
 
+
 	connection := SQLite3Connection on:
 		              (Smalltalk imageDirectory / 'PhobDatabase.db')
-			              fullName.connection open.
+			              fullName.
+	connection open
 ]
 
 { #category : #file }

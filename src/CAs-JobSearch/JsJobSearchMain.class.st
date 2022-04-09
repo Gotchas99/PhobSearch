@@ -5,7 +5,7 @@ Class {
 		'viewFilter',
 		'viewJobs'
 	],
-	#category : #'CAs-JobSearch'
+	#category : #'CAs-JobSearch-Web'
 }
 
 { #category : #testing }
@@ -73,12 +73,11 @@ JsJobSearchMain >> groups [
 JsJobSearchMain >> initialize [
 
 	super initialize.
-	self filterView.
 	viewFilter := Dictionary new
 		              at: #field put: 'Alla';
 		              at: #group put: 'Alla';
 		              at: #occupation put: 'Alla';
-		              yourself
+		              yourself.	self filterView.
 ]
 
 { #category : #accessing }
@@ -104,21 +103,24 @@ JsJobSearchMain >> renderContentOn: html [
 	html heading
 		level1;
 		with: 'Phob search'.
-	"	html submitButton on: #getJobs of: self."
-	html break.
 	html anchor
 		callback: [ self getJobs ];
 		with: 'Hämta annonser'.
 	html break.
+	html anchor
+		callback: [ self call: JsJobFilterView new ];
+		with: 'Visa filter'.
+	html break.
 	html text: 'Antal jobb ' , self jobs size asString.
 	html break.
 	html text: 'Senast hämtade: ' , self retrievalTime.
-	html break.html break.
+	html break.
+	html break.
 	self renderViewFilterOn: html.
 	html break.
-	self renderJobsOn: html.
-	html horizontalRule.
-	self renderFilter: html
+	self renderJobsOn: html
+	"html horizontalRule.
+	self renderFilter: html"
 	"	html form: [ 
 		html heading
 			level3;
