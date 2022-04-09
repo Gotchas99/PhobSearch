@@ -196,6 +196,7 @@ JsJobSearchMain >> renderJobsOn: html [
 					with: [ 
 						html anchor
 							callback: [ self showJob: each ];
+							class: 'tempjob' if: each isTempJob;
 							with: each headline.
 						html text: ' (' , each employer , ') '.
 						html anchor
@@ -206,21 +207,21 @@ JsJobSearchMain >> renderJobsOn: html [
 
 				html anchor
 					callback: [ 
-						JsJobHub default addFilterOccupation: each occupation .
-								self filterView];
+						JsJobHub default addFilterOccupation: each occupation.
+						self filterView ];
 					with: each occupation.
 				html text: ' * '.
 
 				html anchor
 					callback: [ 
-						JsJobHub default addFilterGroup: each occupationGroup .
-								self filterView];
+						JsJobHub default addFilterGroup: each occupationGroup.
+						self filterView ];
 					with: each occupationGroup.
 				html text: ' * '.
 				html anchor
 					callback: [ 
 						JsJobHub default addFilterField: each occupationField.
-								self filterView ];
+						self filterView ];
 					with: each occupationField ] ]
 ]
 
@@ -284,7 +285,9 @@ JsJobSearchMain >> showJob: aJob [
 
 { #category : #hooks }
 JsJobSearchMain >> style [
-    ^ 'h1 { text-align: center; }'
+
+	^ 'h1 { text-align: center; }
+	.tempjob {color: red}'
 ]
 
 { #category : #updating }

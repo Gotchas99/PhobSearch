@@ -53,6 +53,17 @@ JsJob >> id [
 	^ dict at: #id
 ]
 
+{ #category : #testing }
+JsJob >> isTempJob [
+
+	| tmp words |
+	words := #( 'extrajobb' 'vikariat' 'student' 'säsong' 'sommar'
+	            'timavlönad' 'timanställd' 'behov' ).
+	tmp := words anySatisfy: [ :word | 
+		       self headline includesSubstring: word caseSensitive: false ].
+	^ tmp
+]
+
 { #category : #accessing }
 JsJob >> logo_url [
 
