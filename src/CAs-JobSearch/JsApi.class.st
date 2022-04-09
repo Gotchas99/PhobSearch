@@ -7,7 +7,7 @@ Class {
 	#classVars : [
 		'ApiKey'
 	],
-	#category : #'CAs-JobSearch'
+	#category : #'CAs-JobSearch-Core'
 }
 
 { #category : #initialization }

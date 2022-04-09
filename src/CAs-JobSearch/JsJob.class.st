@@ -4,13 +4,19 @@ Class {
 	#instVars : [
 		'dict'
 	],
-	#category : #'CAs-JobSearch'
+	#category : #'CAs-JobSearch-Core'
 }
 
 { #category : #'instance creation' }
 JsJob class >> fromDict: aDict [
 
 	^self new fromDict: aDict 
+]
+
+{ #category : #accessing }
+JsJob >> deadline [
+
+	^ dict at: #application_deadline
 ]
 
 { #category : #accessing }
@@ -93,6 +99,12 @@ JsJob >> printOn: aStream [
 
 	aStream
 		nextPutAll:self headline 
+]
+
+{ #category : #accessing }
+JsJob >> published [
+
+	^ dict at: #publication_date
 ]
 
 { #category : #accessing }

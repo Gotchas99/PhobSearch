@@ -11,7 +11,7 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'CAs-JobSearch'
+	#category : #'CAs-JobSearch-Core'
 }
 
 { #category : #accessing }

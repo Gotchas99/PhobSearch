@@ -204,14 +204,15 @@ JsJobSearchMain >> renderJobsOn: html [
 								JsJobHub default addFilterJob: each.
 								self filterView ];
 							with: '  (Dölj detta jobb)' ].
-
-				html anchor
+				html text:
+					'Publicerad: ' , each published , ', Sista ansökan: '
+					, each deadline , '  '.
+				html anchor 
 					callback: [ 
 						JsJobHub default addFilterOccupation: each occupation.
 						self filterView ];
 					with: each occupation.
 				html text: ' * '.
-
 				html anchor
 					callback: [ 
 						JsJobHub default addFilterGroup: each occupationGroup.
