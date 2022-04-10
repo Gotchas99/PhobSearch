@@ -63,7 +63,7 @@ JsJob >> id [
 JsJob >> isTempJob [
 
 	| tmp words |
-	words := #( 'extrajobb' 'vikariat' 'student' 'säsong' 'sommar'
+	words := #( 'extrajobb' 'vikariat' 'timvikarie' 'student' 'säsong' 'sommar'
 	            'timavlönad' 'timanställd' 'behov' ).
 	tmp := words anySatisfy: [ :word | 
 		       self headline includesSubstring: word caseSensitive: false ].

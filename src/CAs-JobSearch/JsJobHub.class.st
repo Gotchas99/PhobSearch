@@ -130,8 +130,9 @@ JsJobHub >> getJobs [
 	api := JsApi new.
 	rawJobs := api search.
 	retrievalTime := DateAndTime current.
-	self traceCr: 'Retrieving jobs at: ',retrievalTime asString.
-	self filterJobs
+	self traceCr: 'Retrieving jobs at: ' , retrievalTime asString.
+	self filterJobs.
+	[ self removeStaleJobFilters  ]fork.
 ]
 
 { #category : #initialization }
@@ -197,6 +198,16 @@ JsJobHub >> removeFilterOccupation: aString [
 
 	self filterOccupation remove: aString.
 	self filterJobs
+]
+
+{ #category : #action }
+JsJobHub >> removeStaleJobFilters [
+
+
+	self filterSingleJobs do: [ :each | 
+		[ self jobId: (each at: #id) asString ]
+			on: NotFound
+			do: [ self removeFilterJob: each ] ]
 ]
 
 { #category : #accessing }
