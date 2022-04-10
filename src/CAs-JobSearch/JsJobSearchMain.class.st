@@ -16,10 +16,9 @@ JsJobSearchMain class >> canBeRoot [
 { #category : #testing }
 JsJobSearchMain class >> initialize [
 
-
-	WAAdmin register: self asApplicationAt: 'phobsearch'
-	"    app libraries add: SULibrary.
-    app preferenceAt: #sessionClass put: FooSession"
+	(WAAdmin register: self asApplicationAt: 'phobsearch')
+addLibrary: JQDevelopmentLibrary .
+    "app preferenceAt: #sessionClass put: FooSession"
 ]
 
 { #category : #accessing }
@@ -232,6 +231,7 @@ JsJobSearchMain >> renderViewFilterOn: html [
 	html form: [ 
 		html text: 'Field: '.
 		html select
+			onChange: html jQuery ajax serializeForm;
 			list: self fields;
 			selected: (viewFilter at: #field ifAbsent: [ 'Alla' ]);
 			callback: [ :value | self setField: value ].
