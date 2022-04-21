@@ -228,24 +228,26 @@ JsJobSearchMain >> renderJobsOn: html [
 { #category : #rendering }
 JsJobSearchMain >> renderViewFilterOn: html [
 
-	html form: [ 
-		html text: 'Field: '.
-		html select
-			onChange: html jQuery ajax serializeForm;
-			list: self fields;
-			selected: (viewFilter at: #field ifAbsent: [ 'Alla' ]);
-			callback: [ :value | self setField: value ].
-		html text: 'Group: '.
-		html select
-			list: self groups;
-			selected: (viewFilter at: #group ifAbsent: [ 'Alla' ]);
-			callback: [ :value | self setGroup: value ].
-		html text: 'Occupation: '.
-		html select
-			list: self occupations;
-			selected: (viewFilter at: #occupation ifAbsent: [ 'Alla' ]);
-			callback: [ :value | self setOccupation: value ].
-		html submitButton on: #filter of: self ]
+	html form
+		defaultAction: [ self filter ];
+		with: [ 
+			html text: 'Field: '.
+			html select
+				"onChange: html jQuery this parent triggerSubmit;"
+				list: self fields;
+				selected: (viewFilter at: #field ifAbsent: [ 'Alla' ]);
+				callback: [ :value | self setField: value ].
+			html text: 'Group: '.
+			html select
+				list: self groups;
+				selected: (viewFilter at: #group ifAbsent: [ 'Alla' ]);
+				callback: [ :value | self setGroup: value ].
+			html text: 'Occupation: '.
+			html select
+				list: self occupations;
+				selected: (viewFilter at: #occupation ifAbsent: [ 'Alla' ]);
+				callback: [ :value | self setOccupation: value ].
+			html submitButton on: #filter of: self ]
 ]
 
 { #category : #accessing }
